@@ -1,11 +1,12 @@
+import "dotenv/config"; 
 import express from "express";
 import { connectDB } from "./config/db.js";
 import { apiRouter } from "./routes/index.js";
 import cookieParser from 'cookie-parser';
 import cors from "cors";
-import dotenv from "dotenv";
+
 connectDB()
-dotenv.config();
+
 
 const app=express();
 app.use(express.json());
