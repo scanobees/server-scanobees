@@ -136,7 +136,7 @@ export const sendCarAlert = async (req, res) => {
     });
 
     // 3️⃣ Prepare WhatsApp payload data
-    const templateName = "scanobees_car_msg";
+    const templateName = "scanobees_vehicle_alert";
     const parameters = [
       String(regNumber),   // First {}
       String(regNumber),   // Second {}
