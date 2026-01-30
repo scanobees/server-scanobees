@@ -17,6 +17,7 @@ import {
 
 
 
+
 // mapping model + generator function
 const TYPE_MAP = {
   car: { model: carModel, generator: generateCarCode },
