@@ -3,86 +3,62 @@ import userModel from "../../models/userModel.js";
 
 export const updateUserProfile = async (req, res) => {
   try {
-    const userId = req.user._id;
-
-    const {
-      name,
-      phone,
-      country_code,
-      addressLine,
-      city,
-      state,
-      pin,
-      country
-    } = req.body;
-
-    const updateData = {};
-
-    // Name
-    if (name) {
-      updateData.name = name.trim();
+    // 🛡 Auth guard (protect middleware already ran)
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized"
+      });
     }
 
-    // Phone mapping
-    if (phone || country_code) {
-      const e164 =
-        phone && country_code ? `${country_code}${phone}` : undefined;
+    const userId = req.user.id;
 
-      updateData.phone = {
-        countryCode: country_code,
-        number: phone,
-        e164
-      };
-    }
+    const updatePayload = {};
 
-    // Address mapping
-    if (
-      addressLine ||
-      city ||
-      state ||
-      pin ||
-      country
-    ) {
-      updateData.address = {
-        addressLine,
-        city,
-        state,
-        pin,
-        country
-      };
-    }
+    // ✅ Allow only safe fields
+    const allowedFields = [
+      "name",
+      "phone.countryCode",
+      "phone.number",
+      "address.addressLine",
+      "address.city",
+      "address.state",
+      "address.pin",
+      "address.country"
+    ];
 
-    updateData.isProfileUpdated = true;
-
-    const updatedUser = await userModel.findByIdAndUpdate(
-      userId,
-      { $set: updateData },
-      {
-        new: true,
-        runValidators: true
+    for (const field of allowedFields) {
+      if (req.body[field] !== undefined) {
+        updatePayload[field] = req.body[field];
       }
-    ).select("-__v");
+    }
+
+    // Always mark profile updated
+    updatePayload.isProfileUpdated = true;
+
+    const updatedUser = await userModel.findOneAndUpdate(
+      { _id: userId, isDeleted: false },
+      { $set: updatePayload },
+      { new: true }
+    );
 
     if (!updatedUser) {
       return res.status(404).json({
         success: false,
-        message: "User not found"
+        message: "User not found or deleted"
       });
     }
 
     return res.status(200).json({
       success: true,
-      message: "Profile updated successfully",
       data: updatedUser
     });
-
   } catch (error) {
     console.error("Profile Update Error:", error);
 
     return res.status(500).json({
       success: false,
-      message: "Failed to update profile",
-      error: error.message
+      message: "Profile update failed"
     });
   }
 };
