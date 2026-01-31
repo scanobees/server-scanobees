@@ -139,7 +139,7 @@ export const sendCarAlert = async (req, res) => {
     const templateName = "scanobees_vehicle_alert";
     const parameters = [
       String(regNumber),   // First {}
-      String(regNumber),   // Second {}
+      // String(regNumber),   // Second {}
       String(issueReason), // Third {}
     ];
 
