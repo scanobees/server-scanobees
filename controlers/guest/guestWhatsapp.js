@@ -140,7 +140,7 @@ export const sendCarAlert = async (req, res) => {
     const parameters = [
       String(regNumber),   // First {}
       // String(regNumber),   // Second {}
-      String(issueReason), // Third {}
+      // String(issueReason), // Third {}
     ];
 
     console.log("📦 WhatsApp send payload:", {
@@ -163,7 +163,7 @@ export const sendCarAlert = async (req, res) => {
 
     return res.json({
       success: true,
-      message: `WhatsApp alert sent successfully to ${phoneNumber}`,
+      message: `WhatsApp alert sent successfully hi to ${phoneNumber}`,
     });
   } catch (error) {
     console.error("🔥 sendCarAlert ERROR");
