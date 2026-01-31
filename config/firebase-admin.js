@@ -3,6 +3,7 @@ import admin from "firebase-admin";
 
 // Important: Fix the private key newline issue
 const privateKey = process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n');
+console.log("🔥 Firebase Admin Project:", process.env.FIREBASE_PROJECT_ID);
 
 if (!admin.apps.length) {
   admin.initializeApp({
