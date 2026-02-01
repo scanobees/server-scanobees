@@ -92,35 +92,30 @@ export const userLogin = async (req, res) => {
    GOOGLE OAUTH (FIREBASE TOKEN)
 ───────────────────────────── */
 export const googleAuth = async (req, res) => {
-  console.log("🟡 [GOOGLE AUTH] Request received");
+
 
   const { idToken } = req.body;
 
-  console.log("🟡 [GOOGLE AUTH] idToken exists:", !!idToken);
 
   if (!idToken) {
-    console.log("🔴 [GOOGLE AUTH] Missing ID Token");
     return res
       .status(400)
       .json({ success: false, message: "Firebase ID Token required" });
   }
 
   try {
-    console.log("🟡 [GOOGLE AUTH] Verifying ID token...");
 
     const decodedToken = await admin.auth().verifyIdToken(idToken);
 
-    console.log("🟢 [GOOGLE AUTH] Token verified");
-    console.log("🟢 [GOOGLE AUTH] Token AUD:", decodedToken.aud);
-    console.log("🟢 [GOOGLE AUTH] Token EMAIL:", decodedToken.email);
+   
 
     const { email, name } = decodedToken;
 
     let user = await userModel.findOne({ email });
-    console.log("🟡 [GOOGLE AUTH] User exists:", !!user);
+   
 
     if (!user) {
-      console.log("🟡 [GOOGLE AUTH] Creating new user");
+     
       user = await userModel.create({
         email,
         name,
@@ -132,20 +127,17 @@ export const googleAuth = async (req, res) => {
     await user.save();
 
     const token = generateToken(user._id);
-    console.log("🟢 [GOOGLE AUTH] JWT generated");
+
 
     res.cookie("token", token, cookieOptions);
-    console.log("🟢 [GOOGLE AUTH] Cookie set");
+    
 
     return res.status(200).json({
       success: true,
       message: "Login successful",
     });
   } catch (error) {
-    console.error("🔴 [GOOGLE AUTH ERROR]");
-    console.error("🔴 Message:", error.message);
-    console.error("🔴 Code:", error.code);
-    console.error("🔴 Full Error:", error);
+  
 
     return res.status(401).json({
       success: false,

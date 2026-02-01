@@ -40,6 +40,11 @@ const petTagSchema = new mongoose.Schema(
         phone: String
       }
     ],
+    phone: {
+      countryCode: { type: String },
+      number: { type: String },
+      e164: { type: String }
+    },
 
     scans: [
       {
