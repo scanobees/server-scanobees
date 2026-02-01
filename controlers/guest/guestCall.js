@@ -44,7 +44,8 @@ export const connectCall = async (req, res) => {
     }
 
     // Normalize to match DB
-    const fromE164 = normalizeToE164(rawFrom);
+    const fromE164 = rawFrom.trim();
+
 
     // Find active call session
     const session = await callSessionModel.findOne({
