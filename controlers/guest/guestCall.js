@@ -80,7 +80,7 @@ export const connectCall = async (req, res) => {
       },
 
       // Your Exotel virtual number (E.164)
-      outgoing_phone_number: "04954263008",
+      outgoing_phone_number: "+914954263008",
 
       record: true,
       recording_channels: "dual",
