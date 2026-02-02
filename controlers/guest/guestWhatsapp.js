@@ -139,8 +139,8 @@ export const sendCarAlert = async (req, res) => {
     const templateName = "scanobees_vehicle_alert";
     const parameters = [
       String(regNumber),   // First {}
-      // String(regNumber),   // Second {}
-      // String(issueReason), // Third {}
+      String(regNumber),   // Second {}
+      String(issueReason), // Third {}
     ];
 
     console.log("📦 WhatsApp send payload:", {
