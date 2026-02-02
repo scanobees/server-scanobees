@@ -185,11 +185,11 @@ export const sendCarAlert = async (req, res) => {
 };
 
 export const testApi = (req, res) => {
-  console.log("✅ Test API hit");
+  console.log("✅ Test API new hit");
 
   res.json({
     success: true,
-    message: "hi",
+    message: "hddi",
   });
 };
 
@@ -197,11 +197,22 @@ export const testApi = (req, res) => {
 
 import axios from "axios";
 
+import axios from "axios";
+
 export const sendWhatsappTestMessage = async (req, res) => {
+  console.log("📩 Incoming WhatsApp Test Request");
+  console.log("➡️ req.body:", req.body);
+
   try {
     const { regNumber, issueReason, phoneNumber } = req.body;
 
     if (!regNumber || !issueReason || !phoneNumber) {
+      console.error("❌ Validation Failed:", {
+        regNumber,
+        issueReason,
+        phoneNumber,
+      });
+
       return res.status(400).json({
         success: false,
         message: "regNumber, issueReason and phoneNumber are required",
@@ -216,7 +227,17 @@ export const sendWhatsappTestMessage = async (req, res) => {
       EXOTEL_WHATSAPP_NUMBER,
     } = process.env;
 
+    console.log("🔐 ENV CHECK:", {
+      EXOTEL_API_KEY: !!EXOTEL_API_KEY,
+      EXOTEL_API_TOKEN: !!EXOTEL_API_TOKEN,
+      EXOTEL_ACCOUNT_SID: !!EXOTEL_ACCOUNT_SID,
+      EXOTEL_SUBDOMAIN,
+      EXOTEL_WHATSAPP_NUMBER,
+    });
+
     const url = `https://${EXOTEL_SUBDOMAIN}.exotel.com/v1/Accounts/${EXOTEL_ACCOUNT_SID}/Whatsapp/send`;
+
+    console.log("🌐 Exotel URL:", url);
 
     const payload = {
       from: {
@@ -230,26 +251,25 @@ export const sendWhatsappTestMessage = async (req, res) => {
       message: {
         type: "template",
         template: {
-          name: "scanobees_vehicle_alert_test", // must match Exotel approved template name
+          name: "scanobees_vehicle_alert_test",
           language: "en",
           components: [
             {
               type: "body",
               parameters: [
-                {
-                  type: "text",
-                  text: regNumber,
-                },
-                {
-                  type: "text",
-                  text: issueReason,
-                },
+                { type: "text", text: regNumber },
+                { type: "text", text: issueReason },
               ],
             },
           ],
         },
       },
     };
+
+    console.log(
+      "📦 Exotel Payload:",
+      JSON.stringify(payload, null, 2)
+    );
 
     const response = await axios.post(url, payload, {
       auth: {
@@ -261,16 +281,26 @@ export const sendWhatsappTestMessage = async (req, res) => {
       },
     });
 
+    console.log("✅ Exotel Success Response:", response.data);
+
     return res.status(200).json({
       success: true,
       message: "WhatsApp message sent successfully",
       exotelResponse: response.data,
     });
   } catch (error) {
-    console.error(
-      "WhatsApp Send Error:",
-      error.response?.data || error.message
-    );
+    console.error("❌ WhatsApp Send Failed");
+
+    if (error.response) {
+      console.error("🔻 Status:", error.response.status);
+      console.error("🔻 Headers:", error.response.headers);
+      console.error(
+        "🔻 Data:",
+        JSON.stringify(error.response.data, null, 2)
+      );
+    } else {
+      console.error("🔻 Error Message:", error.message);
+    }
 
     return res.status(500).json({
       success: false,
