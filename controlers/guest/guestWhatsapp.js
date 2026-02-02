@@ -1,6 +1,7 @@
 import carModel from "../../models/scans/carModel.js";
 import { sendWhatsAppMessage } from "../../utils/whatsappSender.js";
 
+import axios from "axios";
 
 
 // export const sendCarAlert = async (req, res) => {
@@ -184,20 +185,19 @@ import { sendWhatsAppMessage } from "../../utils/whatsappSender.js";
 //   }
 // };
 
-// export const testApi = (req, res) => {
-//   console.log("✅ Test API new hit");
+export const testApi = (req, res) => {
+  console.log("✅ Test API new hit");
 
-//   res.json({
-//     success: true,
-//     message: "hddi",
-//   });
-// };
-
-
+  res.json({
+    success: true,
+    message: "hddi",
+  });
+};
 
 
 
-import axios from "axios";
+
+
 
 export const sendWhatsappTestMessage = async (req, res) => {
   console.log("📩 Incoming WhatsApp Test Request");
