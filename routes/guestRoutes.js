@@ -1,7 +1,7 @@
 import e from "express";
 import { getSerialDetails } from "../controlers/guest/guestScan.js";
 import { maskedCall } from "../utils/maskedCall.js";
-import { sendCarAlert, sendWhatsappTestMessage, testApi } from "../controlers/guest/guestWhatsapp.js";
+import {  sendWhatsappTestMessage, testApi } from "../controlers/guest/guestWhatsapp.js";
 import { callStatus, connectCall, initiateMaskedCall } from "../controlers/guest/guestCall.js";
 
 
