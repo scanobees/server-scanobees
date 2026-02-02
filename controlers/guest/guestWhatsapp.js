@@ -186,11 +186,11 @@ import axios from "axios";
 // };
 
 export const testApi = (req, res) => {
-  console.log("✅ Test API new hit");
+  console.log(" API new hit");
 
   res.json({
     success: true,
-    message: "hddi",
+    message: "helo",
   });
 };
 
