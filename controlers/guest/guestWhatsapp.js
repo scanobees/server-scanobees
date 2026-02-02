@@ -192,3 +192,90 @@ export const testApi = (req, res) => {
     message: "hi",
   });
 };
+
+
+
+import axios from "axios";
+
+export const sendWhatsappTestMessage = async (req, res) => {
+  try {
+    const { regNumber, issueReason, phoneNumber } = req.body;
+
+    if (!regNumber || !issueReason || !phoneNumber) {
+      return res.status(400).json({
+        success: false,
+        message: "regNumber, issueReason and phoneNumber are required",
+      });
+    }
+
+    const {
+      EXOTEL_API_KEY,
+      EXOTEL_API_TOKEN,
+      EXOTEL_ACCOUNT_SID,
+      EXOTEL_SUBDOMAIN,
+      EXOTEL_WHATSAPP_NUMBER,
+    } = process.env;
+
+    const url = `https://${EXOTEL_SUBDOMAIN}.exotel.com/v1/Accounts/${EXOTEL_ACCOUNT_SID}/Whatsapp/send`;
+
+    const payload = {
+      from: {
+        type: "whatsapp",
+        number: EXOTEL_WHATSAPP_NUMBER,
+      },
+      to: {
+        type: "whatsapp",
+        number: phoneNumber,
+      },
+      message: {
+        type: "template",
+        template: {
+          name: "scanobees_vehicle_alert_test", // must match Exotel approved template name
+          language: "en",
+          components: [
+            {
+              type: "body",
+              parameters: [
+                {
+                  type: "text",
+                  text: regNumber,
+                },
+                {
+                  type: "text",
+                  text: issueReason,
+                },
+              ],
+            },
+          ],
+        },
+      },
+    };
+
+    const response = await axios.post(url, payload, {
+      auth: {
+        username: EXOTEL_API_KEY,
+        password: EXOTEL_API_TOKEN,
+      },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "WhatsApp message sent successfully",
+      exotelResponse: response.data,
+    });
+  } catch (error) {
+    console.error(
+      "WhatsApp Send Error:",
+      error.response?.data || error.message
+    );
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to send WhatsApp message",
+      error: error.response?.data || error.message,
+    });
+  }
+};
