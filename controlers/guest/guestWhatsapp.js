@@ -28,7 +28,7 @@ export const sendWhatsappMessage = async (req, res) => {
             content: {
               type: "template",
               template: {
-                name: "scanobees_vehicle_alert_test",
+                name: "car_alert",
                 language: {
                   policy: "deterministic",
                   code: "en",
@@ -39,7 +39,7 @@ export const sendWhatsappMessage = async (req, res) => {
                     parameters: [
                       {
                         type: "text",
-                        text: "June",
+                        text: regNumber,
                       },
                     ],
                   },
