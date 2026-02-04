@@ -1,5 +1,5 @@
 import axios from "axios";
-import carModel from "../../models/scans/carModel";
+import carModel from "../../models/scans/carModel.js";
 
 export const sendWhatsappMessage = async (req, res) => {
   try {
