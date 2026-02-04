@@ -145,21 +145,41 @@ export const sendCarWhatsappAlert = async (req, res) => {
       });
     }
 
-    // 📞 Resolve owner phone (priority: e164 → number)
-    let toNumber =
-      car.phone?.e164 || car.phone?.number || "";
+    // 📞 Resolve owner phone
+    let rawPhone =
+      car.phone?.e164 ||
+      car.phone?.number ||
+      "";
 
-    if (!toNumber) {
+    if (!rawPhone) {
       return res.status(400).json({
         success: false,
         message: "Owner phone number not available",
       });
     }
 
-    // Normalize phone number (India)
-    toNumber = toNumber.startsWith("91")
-      ? toNumber
-      : `91${toNumber}`;
+    // 🧹 Sanitize (digits only)
+    rawPhone = rawPhone.replace(/\D/g, "");
+
+    // 🇮🇳 Normalize to India (NO +)
+    if (rawPhone.length === 10) {
+      rawPhone = `91${rawPhone}`;
+    }
+
+    if (rawPhone.length === 11 && rawPhone.startsWith("0")) {
+      rawPhone = `91${rawPhone.slice(1)}`;
+    }
+
+    // ❌ Final validation for Exotel
+    if (!/^91\d{10}$/.test(rawPhone)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid owner phone format",
+        debugPhone: rawPhone,
+      });
+    }
+
+    const toNumber = rawPhone;
 
     // 📦 Exotel WhatsApp payload
     const payload = {
