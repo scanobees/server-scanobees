@@ -1,7 +1,7 @@
 import e from "express";
 import { getSerialDetails } from "../controlers/guest/guestScan.js";
 import { maskedCall } from "../utils/maskedCall.js";
-import { sendCarWhatsappAlert, sendWhatsappMessage, testApi } from "../controlers/guest/guestWhatsapp.js";
+import { sendBikeWhatsappAlert, sendCarWhatsappAlert, sendTagWhatsappAlert, sendWhatsappMessage, testApi } from "../controlers/guest/guestWhatsapp.js";
 import { callStatus, connectCall, initiateMaskedCall } from "../controlers/guest/guestCall.js";
 
 
@@ -22,5 +22,7 @@ router.post("/status", callStatus);
 router.get('/test',testApi);
 router.post("/vehicle-alert", sendWhatsappMessage);
 router.post("/whatsapp/car-alert", sendCarWhatsappAlert);
+router.post("/whatsapp/bike-alert", sendBikeWhatsappAlert);
+router.post("/whatsapp/tag-alert", sendTagWhatsappAlert);
 
 export {router as guestRouter}
