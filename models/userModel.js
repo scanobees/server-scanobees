@@ -76,7 +76,17 @@ const userSchema = new mongoose.Schema(
     isProfileUpdated: {
       type: Boolean,
       default: false
-    }
+    },
+    otp: String,
+otpExpire: Date,
+otpAttempts: {
+  type: Number,
+  default: 0,
+},
+otpVerified: {
+  type: Boolean,
+  default: false,
+}
   },
   { timestamps: true }
 );

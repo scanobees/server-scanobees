@@ -1,5 +1,5 @@
 import e from "express";
-import { checkUser, googleAuth, userLogin, userLogout, userSignup } from "../controlers/user/userAuthController.js";
+import { checkUser, forgotPassword, googleAuth, resendOtp, resetPassword, userLogin, userLogout, userSignup, verifyOtp } from "../controlers/user/userAuthController.js";
 import { protect } from "../middlewares/userAuth.js";
 import { linkBySerialNumber } from "../controlers/user/linkingController.js";
 import { getUserDetails, updateUserProfile } from "../controlers/user/userController.js";
@@ -38,5 +38,9 @@ router.put("/update-pet-tag/:serialNumber", updatePetTagBySnUser);
 router.put("/update-business-card/:serialNumber", updateBusinessCardBySnUser);
 //google-auth
 router.post('/google-auth',googleAuth)
-
+// otp and reset pass
+router.post("/forgot-password", forgotPassword);
+router.post("/resend-otp", resendOtp);
+router.post("/verify-otp", verifyOtp);
+router.post("/reset-password", resetPassword);
 export {router as userRouter}
