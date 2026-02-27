@@ -1,7 +1,7 @@
 import e from "express";
 import { checkUser, forgotPassword, googleAuth, resendOtp, resetPassword, userLogin, userLogout, userSignup, verifyOtp } from "../controlers/user/userAuthController.js";
 import { protect } from "../middlewares/userAuth.js";
-import { linkBySerialNumber } from "../controlers/user/linkingController.js";
+import { linkBySerialNumber, unlinkBySerialNumber } from "../controlers/user/linkingController.js";
 import { getUserDetails, updateUserProfile } from "../controlers/user/userController.js";
 import { getBikeBySnUser, getBusinessCardBySnUser, getCarBySnUser, getKeyBySnUser, getPetTagBySnUser, getTagBySnUser, getUserLinkedAssets } from "../controlers/user/userScanController.js";
 import { updateBikeBySnUser, updateBusinessCardBySnUser, updateCarBySnUser, updateKeyBySnUser, updatePetTagBySnUser, updateTagBySnUser } from "../controlers/user/userScanUpdateController.js";
@@ -19,6 +19,7 @@ router.post('/login',userLogin)
 router.post('/logout',userLogout)
 router.get('/check',protect,checkUser)
 router.post('/link',protect,linkBySerialNumber)
+router.post('/unlink',protect,unlinkBySerialNumber)
 router.post('/profile-update',protect,updateUserProfile)
 router.get('/get-user',protect,getUserDetails)
 router.get('/get-user-assets',protect,getUserLinkedAssets)
