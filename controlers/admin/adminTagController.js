@@ -13,7 +13,9 @@ import {
   generateKeyTagCode,
   generateBusinessCardCode,
   generatePetTagCode,
+  generateReviewCardCode,
 } from "../../utils/nanoid.js";
+import reviewCardModel from "../../models/scans/reviewCardModel.js";
 
 
 
@@ -24,14 +26,15 @@ const TYPE_MAP = {
   bike: { model: bikeModel, generator: generateBikeCode },
   tag: { model: tagModel, generator: generateTagCode },
   keytag: { model: keyModel, generator: generateKeyTagCode },
-  // Added Business Card and Pet Tag
+  
   businesscard: { model: businessCardModel, generator: generateBusinessCardCode },
   pettag: { model: petTagModel, generator: generatePetTagCode },
+  reviewcard: { model: reviewCardModel, generator: generateReviewCardCode },
 };
 
 const generateBatchName = async (type) => {
   const prefixMap = {
-    car: 'C', bike: 'B', tag: 'T', keytag: 'K', businesscard: 'U', pettag: 'P'
+    car: 'C', bike: 'B', tag: 'T', keytag: 'K', businesscard: 'U', pettag: 'P', reviewcard: 'R'
   };
 
   const now = new Date();

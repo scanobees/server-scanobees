@@ -17,12 +17,14 @@ const businessCardSchema = new mongoose.Schema(
     website: String,
     
     bio: String,
-
+    bannerImage: String,
+    
     socialLinks: {
       linkedin: String,
       instagram: String,
       twitter: String,
-      facebook: String
+      facebook: String,
+      youtube: String
     },
 
     owner: {
@@ -37,16 +39,6 @@ const businessCardSchema = new mongoose.Schema(
       e164: { type: String }
     },
 
-    // Shared Scan tracking logic
-    scans: [
-      {
-        scannedAt: { type: Date, default: Date.now },
-        ipAddress: String,
-        ipLocation: { city: String, region: String },
-        gpsLocation: { lat: Number, lng: Number },
-        userAgent: String
-      }
-    ],
 
     scanCount: { type: Number, default: 0 },
     isLinked: { type: Boolean, default: false },

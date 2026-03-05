@@ -20,3 +20,5 @@ export const generateKeyTagCode = () => `K${nanoid()}`;
 export const generateBusinessCardCode = () => `U${nanoid()}`;
 
 export const generatePetTagCode = () => `P${nanoid()}`;
+
+export const generateReviewCardCode = () => `R${nanoid()}`;

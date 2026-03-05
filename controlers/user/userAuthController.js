@@ -17,6 +17,12 @@ const cookieOptions = {
   maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 
+// this cookieOptions cause no token saving in development level
+// just comment these 3
+ // secure: true,
+  // sameSite: "none",
+  // domain: ".scanobees.com",
+
 /* ─────────────────────────────
    EMAIL + PASSWORD SIGNUP
 ───────────────────────────── */
