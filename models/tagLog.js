@@ -10,6 +10,7 @@ const tagLogSchema = new mongoose.Schema({
     required: true,
     enum: ['car', 'bike', 'tag', 'keytag', 'businesscard', 'pettag', 'reviewcard']
   },
+  
   count: { 
     type: Number, 
     required: true 
