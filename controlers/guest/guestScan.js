@@ -4,6 +4,7 @@ import businessCardModel from "../../models/scans/businessCardModel.js";
 import carModel from "../../models/scans/carModel.js";
 import keyModel from "../../models/scans/keyModel.js";
 import petTagModel from "../../models/scans/petTagModel.js";
+import reviewCardModel from "../../models/scans/reviewCardModel.js";
 import tagModel from "../../models/scans/tagModel.js";
 import geoip from "geoip-lite";
 
@@ -151,6 +152,94 @@ export const getSerialDetails = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Server error",
+    });
+  }
+};
+
+// buisness card and review card
+
+export const getBusinessCardGuest = async (req, res) => {
+  try {
+    const { serialNumber } = req.params;
+
+    if (!serialNumber) {
+      return res.status(400).json({
+        success: false,
+        message: "serialNumber param is required"
+      });
+    }
+
+    const card = await businessCardModel.findOneAndUpdate(
+      { serialNumber: serialNumber.toUpperCase(), isDeleted: false },
+      { $inc: { scanCount: 1 } },
+      {
+        new: true,
+        select: "-owner -__v"
+      }
+    );
+
+    if (!card) {
+      return res.status(404).json({
+        success: false,
+        message: "Business card not found"
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      type: "businesscard",
+      data: card
+    });
+
+  } catch (error) {
+    console.error("Business Card Guest Fetch Error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+};
+
+
+
+export const getReviewCardGuest = async (req, res) => {
+  try {
+    const { serialNumber } = req.params;
+
+    if (!serialNumber) {
+      return res.status(400).json({
+        success: false,
+        message: "serialNumber param is required"
+      });
+    }
+
+    const reviewCard = await reviewCardModel.findOneAndUpdate(
+      { serialNumber: serialNumber.toUpperCase(), isDeleted: false },
+      { $inc: { scanCount: 1 } },
+      {
+        new: true,
+        select: "-owner -__v"
+      }
+    );
+
+    if (!reviewCard) {
+      return res.status(404).json({
+        success: false,
+        message: "Review card not found"
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      type: "reviewcard",
+      data: reviewCard
+    });
+
+  } catch (error) {
+    console.error("Review Card Guest Fetch Error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
     });
   }
 };

@@ -3,6 +3,7 @@ import businessCardModel from "../../models/scans/businessCardModel.js";
 import carModel from "../../models/scans/carModel.js";
 import keyModel from "../../models/scans/keyModel.js";
 import petTagModel from "../../models/scans/petTagModel.js";
+import reviewCardModel from "../../models/scans/reviewCardModel.js";
 import tagModel from "../../models/scans/tagModel.js";
 
 export const updateCarBySnUser = async (req, res) => {
@@ -197,6 +198,37 @@ export const updateBusinessCardBySnUser = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Failed to update business card details"
+    });
+  }
+};
+
+export const updateReviewCardBySnUser = async (req, res) => {
+  try {
+    const { serialNumber } = req.params;
+
+    const reviewCard = await reviewCardModel.findOneAndUpdate(
+      { serialNumber: serialNumber.toUpperCase(), isDeleted: false },
+      req.body,
+      { new: true }
+    );
+
+    if (!reviewCard) {
+      return res.status(404).json({
+        success: false,
+        message: "Review card not found"
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: reviewCard
+    });
+
+  } catch (error) {
+    console.error("Update Review Card Error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update review card details"
     });
   }
 };

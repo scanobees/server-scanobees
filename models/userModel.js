@@ -46,6 +46,7 @@ const userSchema = new mongoose.Schema(
     businessCards: [{ type: mongoose.Schema.Types.ObjectId, ref: "BusinessCard" }],
     keyTags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Key" }],
     petTags: [{ type: mongoose.Schema.Types.ObjectId, ref: "PetTag" }],
+    reviewCards: [{ type: mongoose.Schema.Types.ObjectId, ref: "ReviewCard" }],
 
     serialAll: [{ type: String, trim: true }],
 

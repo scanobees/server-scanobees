@@ -5,6 +5,7 @@ import keyModel from "../../models/scans/keyModel.js";
 import petTagModel from "../../models/scans/petTagModel.js";
 import userModel from "../../models/userModel.js";
 import tagModel from "../../models/scans/tagModel.js";
+import reviewCardModel from "../../models/scans/reviewCardModel.js";
 
 export const getUserLinkedAssets = async (req, res) => {
   try {
@@ -41,8 +42,13 @@ export const getUserLinkedAssets = async (req, res) => {
         match: { isDeleted: false },
         options: { sort: { createdAt: -1 } }
       })
+      .populate({
+  path: "reviewCards",
+  match: { isDeleted: false },
+  options: { sort: { createdAt: -1 } }
+})
       .select(
-        "cars bikes tags businessCards keyTags petTags serialAll premium"
+        "cars bikes tags businessCards keyTags petTags reviewCards serialAll premium"
       );
 
     if (!user) {
@@ -61,6 +67,7 @@ export const getUserLinkedAssets = async (req, res) => {
         businessCards: user.businessCards,
         keyTags: user.keyTags,
         petTags: user.petTags,
+        reviewCards: user.reviewCards,
         serialAll: user.serialAll,
         
       }
@@ -270,6 +277,38 @@ export const getTagBySnUser = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Failed to fetch tag details"
+    });
+  }
+};
+
+
+export const getReviewCardBySnUser = async (req, res) => {
+  try {
+    const { serialNumber } = req.params;
+
+    const reviewCard = await reviewCardModel.findOne({
+      serialNumber: serialNumber.toUpperCase(),
+      isDeleted: false
+    });
+
+    if (!reviewCard) {
+      return res.status(404).json({
+        success: false,
+        message: "Review card not found"
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: reviewCard
+    });
+
+  } catch (error) {
+    console.error("Get Review Card Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch review card details"
     });
   }
 };

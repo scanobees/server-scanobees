@@ -3,6 +3,7 @@ import businessCardModel from "../../models/scans/businessCardModel.js";
 import carModel from "../../models/scans/carModel.js";
 import keyModel from "../../models/scans/keyModel.js";
 import petTagModel from "../../models/scans/petTagModel.js";
+import reviewCardModel from "../../models/scans/reviewCardModel.js";
 import tagModel from "../../models/scans/tagModel.js";
 import userModel from "../../models/userModel.js";
 
@@ -23,7 +24,8 @@ export const linkBySerialNumber = async (req, res) => {
       T: { model: tagModel, userField: "tags" },
       K: { model: keyModel, userField: "keyTags" },
       U: { model: businessCardModel, userField: "businessCards" },
-      P: { model: petTagModel, userField: "petTags" }
+      P: { model: petTagModel, userField: "petTags" },
+      R: { model: reviewCardModel, userField: "reviewCards" }
     };
 
     const config = MODEL_MAP[prefix];
@@ -97,7 +99,8 @@ export const unlinkBySerialNumber = async (req, res) => {
       T: { model: tagModel, userField: "tags" },
       K: { model: keyModel, userField: "keyTags" },
       U: { model: businessCardModel, userField: "businessCards" },
-      P: { model: petTagModel, userField: "petTags" }
+      P: { model: petTagModel, userField: "petTags" },
+      R: { model: reviewCardModel, userField: "reviewCards" }
     };
 
     const config = MODEL_MAP[prefix];
