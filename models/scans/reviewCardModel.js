@@ -35,6 +35,7 @@ const reviewCardSchema = new mongoose.Schema(
     website: String,
 
     googleReviewLink: String,
+    googleMapLink: String,
 
     logo: String,
 
