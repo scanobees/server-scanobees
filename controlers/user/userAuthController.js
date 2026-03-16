@@ -10,9 +10,9 @@ import { sendMail } from "../../utils/sendMail.js";
 ───────────────────────────── */
 const cookieOptions = {
   httpOnly: true,
-  // secure: true,
-  // sameSite: "none",
-  // domain: ".scanobees.com",
+  secure: true,
+  sameSite: "none",
+  domain: ".scanobees.com",
   path: "/",
   maxAge: 7 * 24 * 60 * 60 * 1000,
 };
